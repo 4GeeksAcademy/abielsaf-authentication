@@ -7,8 +7,8 @@ import Form from 'react-bootstrap/Form';
 
 export const Login = () => {
 	const { store, actions } = useContext(Context);
-	const { email, setEmail} = useState("")
-	const { password, setPassword} = useState("")
+	const [email, setEmail] = useState("")
+	const [password, setPassword] = useState("")
 
 	const handleClick = () => {
 
@@ -18,8 +18,8 @@ export const Login = () => {
 				"Content-type": "application/json"
 			},
 			body: JSON.stringify({
-				"email": "test",
-    			"password": "test",
+				"email": email,
+    			"password": password,
 			})
 		}
 		fetch('https://curly-space-couscous-7v94gvgx79pq3rgx6-3001.app.github.dev/api/token', opts)
@@ -53,9 +53,10 @@ export const Login = () => {
 						<Form.Control className='text-center' type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
 					</Form.Group>
 					<div className="text-center">
-						<Button className='justify-content-center' variant="dark" type="submit" onClick={handleClick()}>
+						<Button className='justify-content-center' variant="dark" onClick={handleClick}>
 							Submit
 						</Button>
+						
 					</div>
 					
 				</Form>

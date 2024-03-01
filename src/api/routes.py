@@ -76,3 +76,9 @@ def add_user():
         db.session.rollback()
         return jsonify({'error': str(e)}), 400
     
+@api.route("/privateuser", methods=["GET"])
+@jwt_required()
+def get_user():
+    email = get_jwt_identity()
+    dictionary = {"message": "hello User " + email + ", this was a private check."}
+    return jsonify(dictionary)

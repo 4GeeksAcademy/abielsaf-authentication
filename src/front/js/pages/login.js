@@ -41,12 +41,12 @@ export const Login = () => {
 							<Form.Label>Password</Form.Label>
 							<Form.Control className='text-center' type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
 						</Form.Group>
-						<div className="text-center">
+						<div className="text-center mt-3">
 							<Button className='justify-content-center' variant="dark" onClick={handleClick}>
 								Submit
 							</Button>
 						</div>
-						<div className="text-center">
+						<div className="text-center mt-3">
 							Want to sign up? <Button variant="info" onClick={() => navigate("/signup")}>Click here</Button>
 						</div>
 					</Form>

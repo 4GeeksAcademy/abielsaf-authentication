@@ -25,11 +25,17 @@ CORS(api, resources={r"/api/*": {"origins": 'https://curly-space-couscous-7v94gv
 def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    if email != "test" or password != "test":
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        return jsonify({"msg": "User not found"}), 401
+    if user.password != password:
         return jsonify({"msg": "Bad email or password"}), 401
 
     access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token)
+
 
 @api.route("/hello", methods=["GET"])
 @jwt_required()

@@ -1,6 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+			token: null,
 			message: null,
 			demo: [
 				{
@@ -21,15 +22,49 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().changeColor(0, "green");
 			},
 
+			syncTokenFromSessionStore: () => {
+				const token = sessionStorage.getItem("token");
+				console.log("App just loaded, syncing the session storage token");
+				if (token && token !="" && token != undefined) setStore({ token: token });
+			},
+			login: async (email, password) => {
+
+				const opts = {
+					method: "POST",
+					headers: {
+						"Content-type": "application/json"
+					},
+					body: JSON.stringify({
+						"email": email,
+						"password": password,
+					})
+				};
+
+				try {
+					const resp = await fetch('https://curly-space-couscous-7v94gvgx79pq3rgx6-3001.app.github.dev/api/token', opts)
+					if (resp.status !== 200) {
+						alert('There has been an error');
+						return false;
+					}
+					const data = await resp.json();
+					console.log("This is what came from the backend", token);
+					sessionStorage.setItem("token", data.access_token);
+					setStore({ token: data.access_token })
+					return true;
+				}
+				catch (error) {
+					console.error("There has been an error login in")
+				}
+			},
 			getMessage: async () => {
-				try{
+				try {
 					// fetching data from the backend
 					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
 					const data = await resp.json()
 					setStore({ message: data.message })
 					// don't forget to return something, that is how the async resolves
 					return data;
-				}catch(error){
+				} catch (error) {
 					console.log("Error loading message from backend", error)
 				}
 			},
@@ -47,8 +82,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			}
-		}
-	};
+		},
+
+	}
 };
+
 
 export default getState;

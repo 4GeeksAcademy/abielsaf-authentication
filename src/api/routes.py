@@ -16,7 +16,6 @@ api = Blueprint('api', __name__)
 
 
 # Allow CORS requests to this API
-
 CORS(api, resources={r"/api/*": {"origins": 'https://curly-space-couscous-7v94gvgx79pq3rgx6-3000.app.github.dev'}})
 
 

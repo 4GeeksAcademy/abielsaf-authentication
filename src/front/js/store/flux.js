@@ -22,38 +22,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().changeColor(0, "green");
 			},
 
-			syncTokenFromSessionStore: () => {
+			
+			syncToken: () => {
 				const token = sessionStorage.getItem("token");
-				console.log("App just loaded, syncing the session storage token");
-				if (token && token !="" && token != undefined) setStore({ token: token });
+				console.log("session loading getting token")
+				if (token && token != "" && token != undefined && token != null) setStore({ token: token })
 			},
 			login: async (email, password) => {
-
-				const opts = {
-					method: "POST",
-					headers: {
-						"Content-type": "application/json"
-					},
-					body: JSON.stringify({
-						"email": email,
-						"password": password,
-					})
-				};
-
 				try {
-					const resp = await fetch('https://curly-space-couscous-7v94gvgx79pq3rgx6-3001.app.github.dev/api/token', opts)
-					if (resp.status !== 200) {
-						alert('There has been an error');
+					const res = await fetch("https://curly-space-couscous-7v94gvgx79pq3rgx6-3001.app.github.dev/api/token", {
+						method: 'POST',
+						body: JSON.stringify({
+							email: email,
+							password: password
+						}),
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					});
+
+					if (res.status === 200) {
+						const data = await res.json();
+						sessionStorage.setItem("token", data.access_token);
+						setStore({ token: data.access_token });
+						return true;
+					} else if (res.status === 401) {
+						const errorData = await res.json();
+						alert(errorData.msg);
 						return false;
 					}
-					const data = await resp.json();
-					console.log("This is what came from the backend", token);
-					sessionStorage.setItem("token", data.access_token);
-					setStore({ token: data.access_token })
-					return true;
-				}
-				catch (error) {
-					console.error("There has been an error login in")
+				} catch (error) {
+					console.error("There has been an error:", error);
+					return false;
 				}
 			},
 			getMessage: async () => {

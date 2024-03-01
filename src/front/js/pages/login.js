@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -12,17 +12,14 @@ export const Login = () => {
 	const { store, actions } = useContext(Context);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const navigate = useNavigate();
 
 
-	if (store.isLoggedIn) {
-		return <Navigate to="/" replace />;
-	  }
-	
-	  const handleClick = () => {
-		actions.login(email, password).then(() => {
-		  // navigate to the homepage
-		});
-	  };
+    const handleClick = () => {
+        actions.login(email, password)
+    };
+
+    if (store.token && store.token != "" && store.token != null) navigate("/")
 
 	return (
 

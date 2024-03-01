@@ -15,11 +15,12 @@ export const Login = () => {
 	const navigate = useNavigate();
 
 
-    const handleClick = () => {
-        actions.login(email, password)
-    };
+	const handleClick = () => {
+		actions.login(email, password)
+	};
 
-    if (store.token && store.token != "" && store.token != null) navigate("/")
+
+	if (store.token && store.token != "" && store.token != null) navigate("/")
 
 	return (
 
@@ -44,8 +45,12 @@ export const Login = () => {
 							<Button className='justify-content-center' variant="dark" onClick={handleClick}>
 								Submit
 							</Button>
-
 						</div>
+						<div className="text-center">
+							Want to sign up? <button onClick={() => navigate("/signup")}>Click here</button>
+						</div>
+
+
 
 					</Form>
 

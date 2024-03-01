@@ -61,7 +61,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log("session ends")
 				setStore({ token: null })
 			},
+			register: async (email, password) => {
+				try {
+					const res = await fetch("https://curly-space-couscous-7v94gvgx79pq3rgx6-3001.app.github.dev/api/user", {
+						method: 'POST',
+						body: JSON.stringify({
+							email: email,
+							password: password
+						}),
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					});
 
+					if (res.status === 200) {
+						alert("Successful registration");
+						return true;
+					} else if (res.status === 401) {
+						const errorData = await res.json();
+						alert(errorData.msg)
+						return false
+					};
+				} catch (error) {
+					console.error("There has been an error:", error);
+					return false;
+				}
+			},
 			getMessage: async () => {
 				const store = getStore();
 				try {

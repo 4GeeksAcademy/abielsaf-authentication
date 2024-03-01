@@ -56,6 +56,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false;
 				}
 			},
+			logout: () => {
+				sessionStorage.removeItem("token");
+				console.log("session ends")
+				setStore({ token: null })
+			},
+
 			getMessage: async () => {
 				try {
 					// fetching data from the backend

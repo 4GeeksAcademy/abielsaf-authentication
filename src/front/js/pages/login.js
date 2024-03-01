@@ -47,11 +47,8 @@ export const Login = () => {
 							</Button>
 						</div>
 						<div className="text-center">
-							Want to sign up? <button onClick={() => navigate("/signup")}>Click here</button>
+							Want to sign up? <Button variant="info" onClick={() => navigate("/signup")}>Click here</Button>
 						</div>
-
-
-
 					</Form>
 
 				}

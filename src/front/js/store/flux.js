@@ -25,7 +25,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 			syncToken: () => {
 				const token = sessionStorage.getItem("token");
-				console.log("session loading getting token")
+				console.log("Session loading getting token")
 				if (token && token != "" && token != undefined && token != null) setStore({ token: token })
 			},
 			login: async (email, password) => {
@@ -63,12 +63,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getMessage: async () => {
+				const store = getStore();
 				try {
-					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
+					const resp = await fetch("https://curly-space-couscous-7v94gvgx79pq3rgx6-3001.app.github.dev/api/hello", {
+						headers: {
+							'Authorization': 'Bearer ' + store.token
+						}
+					});
 					const data = await resp.json()
 					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
+					console.log(data.message)
 					return data;
 				} catch (error) {
 					console.log("Error loading message from backend", error)

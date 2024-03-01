@@ -31,6 +31,13 @@ def create_token():
     access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token)
 
+@api.route("/hello", methods=["GET"])
+@jwt_required()
+def get_hello():
+    email = get_jwt_identity()
+    dictionary = {"message": "hello User " + email}
+    return jsonify(dictionary)
+
 @api.after_request
 def add_cors_headers(response):
    response.headers['Access-Control-Allow-Origin'] = 'https://curly-space-couscous-7v94gvgx79pq3rgx6-3000.app.github.dev'

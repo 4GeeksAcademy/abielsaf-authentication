@@ -80,5 +80,5 @@ def add_user():
 @jwt_required()
 def get_user():
     email = get_jwt_identity()
-    dictionary = {"message": "hello User " + email + ", this was a private check."}
+    dictionary = {"message": "Hello, this was a private check with your user " + email}
     return jsonify(dictionary)

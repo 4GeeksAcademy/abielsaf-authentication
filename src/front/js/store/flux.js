@@ -23,10 +23,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			
-			syncToken: () => {
+			syncToken: async () => {
 				const token = sessionStorage.getItem("token");
 				console.log("Session loading getting token")
-				if (token && token != "" && token != undefined && token != null) setStore({ token: token })
+				if (token && token != "" && token != undefined && token != null) await setStore({ token: token })
 			},
 			login: async (email, password) => {
 				try {
@@ -98,6 +98,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await resp.json()
 					setStore({ message: data.message })
 					console.log(data.message)
+					return data;
+				} catch (error) {
+					console.log("Error loading message from backend", error)
+				}
+			},
+			getUser: async () => {
+				const store = getStore();
+				try {
+					const resp = await fetch("https://curly-space-couscous-7v94gvgx79pq3rgx6-3001.app.github.dev/api/privateuser", {
+						headers: {
+							'Authorization': 'Bearer ' + store.token
+						}
+					});
+					const data = await resp.json()
+					setStore({ message: data.message })
 					return data;
 				} catch (error) {
 					console.log("Error loading message from backend", error)

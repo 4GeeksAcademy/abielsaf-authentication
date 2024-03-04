@@ -7,6 +7,7 @@ export const Home = () => {
 	const { store, actions } = useContext(Context);
 	const [isAuthenticated, setIsAuthenticated] = useState(false)
 
+	console.log(store, "Estoy en la home")
 	useEffect(() => {
 		if (store.token && store.token !== null && store.token !== "") {
 			setIsAuthenticated(true);
